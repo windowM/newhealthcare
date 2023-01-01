@@ -1,0 +1,21 @@
+spring:
+  output:
+    ansi:
+      enabled: always
+
+  datasource:
+    url: jdbc:oracle:thin:@healthcare_high ?TNS_ADMIN=/Users/user/Desktop/mwindow/allnew/wallet/Wallet_healthcare
+    username: admin
+    password: Ab123456789123
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    hibernate:
+      ddl_auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
