@@ -3,6 +3,8 @@ package com.example.newhealthcare.controller;
 import com.example.newhealthcare.dto.HomeResponseDTO;
 import com.example.newhealthcare.dto.patientdto.PatientResponseDTO;
 import com.example.newhealthcare.dto.ResultDTO;
+import com.example.newhealthcare.entity.Patient;
+import com.example.newhealthcare.service.DandPService;
 import com.example.newhealthcare.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 public class PatientController {
 
     private PatientService patientService;
+    private DandPService dandPService;
     @Autowired
     public PatientController(PatientService patientService){
         this.patientService=patientService;
@@ -44,8 +47,10 @@ public class PatientController {
     }
 
     @PostMapping("{id}/code")
-    public ResultDTO conCode(@PathVariable("id") String id,@RequestParam String code){
+    public ResultDTO conCode(@PathVariable("id") String id,@RequestParam("code") String code){
         System.out.println("코드 매칭 검사중...");
         return patientService.connectCode(id,code);
     }
+
+
 }

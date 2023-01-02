@@ -15,8 +15,8 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamicInsert
-@DynamicUpdate
+//@DynamicInsert
+//@DynamicUpdate
 //@ToString(exclude = {"dandpList","diagnosisList"})
 //@SequenceGenerator(
 //        name = "customer_seq",

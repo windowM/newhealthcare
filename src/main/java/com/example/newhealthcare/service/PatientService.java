@@ -3,16 +3,17 @@ package com.example.newhealthcare.service;
 import com.example.newhealthcare.dto.HomeResponseDTO;
 import com.example.newhealthcare.dto.patientdto.PatientResponseDTO;
 import com.example.newhealthcare.dto.ResultDTO;
+import com.example.newhealthcare.entity.DandP;
 import com.example.newhealthcare.entity.Doctor;
 import com.example.newhealthcare.entity.Patient;
+import com.example.newhealthcare.repository.DandPRepository;
 import com.example.newhealthcare.repository.DoctorRepository;
 import com.example.newhealthcare.repository.PatientRepository;
+import com.example.newhealthcare.repository.SensorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
-import javax.xml.transform.Result;
 import java.util.Optional;
 
 @Service
@@ -20,7 +21,13 @@ import java.util.Optional;
 public class PatientService {
     @Autowired
     private final PatientRepository patientRepository;
+    @Autowired
     private final DoctorRepository doctorRepository;
+    @Autowired
+    private final DandPRepository dandPRepository;
+    @Autowired
+    private final SensorRepository sensorRepository;
+
 
     public ResultDTO login(PatientResponseDTO patientResponseDTO){
         System.out.println("환자 로그인 실행중...");
@@ -88,15 +95,69 @@ public class PatientService {
     }
 
     public HomeResponseDTO home(String id){
+        HomeResponseDTO homeResponseDTO;
         Optional<Patient> findPatient=patientRepository.findById(id);
-        HomeResponseDTO homeResponseDTO=null;
+        if(findPatient.isPresent()){
+            Patient patient1=findPatient.get();
+            System.out.println("홈화면 주인 :"+patient1);
+            homeResponseDTO=HomeResponseDTO.builder().
+                    name(patient1.getName()).
+                    born(patient1.getBorn()).
+                    email(patient1.getEmail()).
+                    result("Success").
+                    content("성공!!!!").
+                    //dandPList(null).//dandpService
+                    //sensor(null).//senseorService
+                    build();
+        }
+        else{
+            homeResponseDTO=HomeResponseDTO.builder().
+                    result("Fail").
+                    content("없는 ID")
+                    .build();
+        }
         return homeResponseDTO;
     }
 
-    public ResultDTO connectCode(String id, String code){
-        Doctor doctor=doctorRepository.findByCode(code);
-        System.out.println("doctor 정보 :"+doctor);
-        ResultDTO resultDTO= ResultDTO.builder().result("Success").content("").build();
+    public ResultDTO connectCode(String id, String tcode){
+        Doctor doctor=doctorRepository.findByCode(tcode);
+        Optional<Patient> patient=patientRepository.findById(id);
+        DandP dandP = dandPRepository.findByCode(tcode);
+        String result="";
+        String content="";
+
+        if(doctor!=null){
+            if(dandP ==null){
+                DandP newDandP = null;
+                newDandP=DandP.builder().
+                        doctorId(doctor).
+                        patientId(patient.get()).
+                        code(tcode).
+                        build();
+                dandPRepository.save(newDandP);
+                System.out.println("patient.get() : "+patient.get());
+                System.out.println(newDandP.getPatientId());
+                System.out.println(newDandP.getDoctorId());
+
+                System.out.println("연결 완료!!!");
+                result="Success";
+            }
+            else{
+                System.out.println("이미 존재하는 코드 번호 입니다.");
+                result="Fail";
+                content="이미 존재하는 코드 번호 입니다.";
+            }
+        }
+        else{
+            System.out.println("코드와 연결된 의사가 없다.");
+            result="Fail";
+            content="코드와 연결된 의사가 없다.";
+        }
+        ResultDTO resultDTO = ResultDTO.builder().
+                result(result).
+                content(content).
+                build();
+
         return resultDTO;
     }
 
