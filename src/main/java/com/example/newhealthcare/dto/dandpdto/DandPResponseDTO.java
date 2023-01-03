@@ -1,11 +1,9 @@
 package com.example.newhealthcare.dto.dandpdto;
 
-import com.example.newhealthcare.entity.Doctor;
-import com.example.newhealthcare.entity.Patient;
+import com.example.newhealthcare.model.entity.Doctor;
+import com.example.newhealthcare.model.entity.Patient;
 import lombok.Builder;
 import lombok.Data;
-
-import javax.persistence.ManyToOne;
 
 @Builder
 @Data

@@ -1,4 +1,4 @@
-package com.example.newhealthcare.entity;
+package com.example.newhealthcare.model.entity;
 
 import lombok.*;
 import lombok.experimental.Accessors;

@@ -1,15 +1,18 @@
-package com.example.newhealthcare.dto.patientdto;
+package com.example.newhealthcare.model.network.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
 
-@Builder
 @Data
-public class PatientResponseDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class PatientApiRequest {
 
     private String patientId;
 
@@ -21,11 +24,5 @@ public class PatientResponseDTO {
 
     private String phone;
 
-    @Email(message = "이메일 형식에 맞지 않습니다.")
     private String email;
-
-    private String result;
-
-    private String content;
-
 }

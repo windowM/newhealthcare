@@ -1,13 +1,14 @@
 package com.example.newhealthcare.dto;
 
-import com.example.newhealthcare.entity.DandP;
-import com.example.newhealthcare.entity.Sensor;
+import com.example.newhealthcare.model.entity.DandP;
+import com.example.newhealthcare.model.entity.Sensor;
 import lombok.Builder;
 import lombok.Data;
 
 @Builder
 @Data
 public class HomeResponseDTO {
+
     private String born;
 
     private String name;
@@ -18,7 +19,7 @@ public class HomeResponseDTO {
 
     private String content;
 
-    private DandP dandPList;
+    private DandP dandpList;
 
     private Sensor sensor;
 

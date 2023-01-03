@@ -1,10 +1,9 @@
 package com.example.newhealthcare.repository;
 
 import com.example.newhealthcare.NewhealthcareApplicationTests;
-import com.example.newhealthcare.entity.Doctor;
+import com.example.newhealthcare.model.entity.Doctor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.Optional;

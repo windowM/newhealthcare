@@ -2,6 +2,9 @@ spring:
   output:
     ansi:
       enabled: always
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
 
   datasource:
     url: jdbc:oracle:thin:@healthcare_high ?TNS_ADMIN=/Users/user/Desktop/mwindow/allnew/wallet/Wallet_healthcare

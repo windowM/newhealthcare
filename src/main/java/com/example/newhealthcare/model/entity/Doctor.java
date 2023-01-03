@@ -1,10 +1,8 @@
-package com.example.newhealthcare.entity;
+package com.example.newhealthcare.model.entity;
 
 import com.example.newhealthcare.BaseEntity;
 import lombok.*;
 import lombok.experimental.Accessors;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,20 +13,8 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-//@DynamicInsert
-//@DynamicUpdate
-//@ToString(exclude = {"dandpList","diagnosisList"})
-//@SequenceGenerator(
-//        name = "customer_seq",
-//        sequenceName = "customer_seq",
-//        initialValue = 1,
-//        allocationSize = 1
-//)
+@ToString(exclude = {"dandpList","diagnosisList"})
 public class Doctor extends BaseEntity {
-
-//    @Column(name="sequence")
-//    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
-//    private Long sq;
 
     @Id
     @Column(name="doctor_id")

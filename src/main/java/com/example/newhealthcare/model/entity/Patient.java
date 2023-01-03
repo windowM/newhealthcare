@@ -1,4 +1,4 @@
-package com.example.newhealthcare.entity;
+package com.example.newhealthcare.model.entity;
 
 import com.example.newhealthcare.BaseEntity;
 import lombok.*;
