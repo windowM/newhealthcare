@@ -25,4 +25,7 @@ public class PatientApiRequest {
     private String phone;
 
     private String email;
+
+    private String code;
+
 }

@@ -18,6 +18,19 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
     @Autowired
     private final DoctorRepository doctorRepository;
 
+    //의사 로그인
+    public Header<DoctorApiResponse> login(Header<DoctorApiRequest> request){
+        DoctorApiRequest doctorApiRequest=request.getData();
+        Optional<Doctor> doctor=doctorRepository.findById(doctorApiRequest.getDoctorId());
+        return (Header<DoctorApiResponse>) doctor.map(doctor1->{
+            if(doctor1.getPassword().equals(doctorApiRequest.getPassword())){
+                return response(doctor1);
+            }else{
+                return Header.ERROR("틀린 비밀번호 입니다.");
+            }
+        }).orElseGet(()->Header.ERROR("없는 회원 정보입니다."));
+    }
+
     //의사 회원가입
     @Override
     public Header<DoctorApiResponse> create(Header<DoctorApiRequest> request) {

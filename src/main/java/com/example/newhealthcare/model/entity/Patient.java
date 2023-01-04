@@ -1,6 +1,8 @@
 package com.example.newhealthcare.model.entity;
 
 import com.example.newhealthcare.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.hibernate.annotations.DynamicInsert;

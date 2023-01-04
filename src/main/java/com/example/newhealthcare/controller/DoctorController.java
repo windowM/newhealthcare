@@ -20,6 +20,13 @@ public class DoctorController implements CrudInterface<DoctorApiRequest,DoctorAp
     @Autowired
     private DoctorService doctorService;
 
+    //의사 로그인
+    @PostMapping("/login")
+    public Header<DoctorApiResponse> login(@RequestBody Header<DoctorApiRequest> request){
+        log.info("{}",request);
+        return doctorService.login(request);
+    }
+
     //의사 회원가입
     @Override
     @PostMapping("/signup")
@@ -28,6 +35,7 @@ public class DoctorController implements CrudInterface<DoctorApiRequest,DoctorAp
         return  doctorService.create(request);
     }
 
+    //로그인 성공시 {id} 의사정보 넘기기
     @Override
     @GetMapping("{id}")
     public Header<DoctorApiResponse> read(@PathVariable("id") String id) {

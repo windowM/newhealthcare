@@ -1,6 +1,8 @@
 package com.example.newhealthcare.model.entity;
 
 import com.example.newhealthcare.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -28,11 +30,13 @@ public class DandP extends BaseEntity {
 
     //DandP N:1 Doctor
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="doctor")
     private Doctor doctorId;
 
     //DandP N:1 Patient
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="patient")
     private Patient patientId;
 
