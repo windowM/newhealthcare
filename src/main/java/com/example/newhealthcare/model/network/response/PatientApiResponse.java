@@ -1,5 +1,7 @@
 package com.example.newhealthcare.model.network.response;
 
+import com.example.newhealthcare.dto.doctordto.DoctorResponseDTO;
+import com.example.newhealthcare.dto.patientdto.PatientResponseDTO;
 import com.example.newhealthcare.model.entity.DandP;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +28,8 @@ public class PatientApiResponse {
 
     private String email;
 
-    private List dandpList;
+    private String code;
 
+    private List<DoctorResponseDTO> doctorId;
 
 }

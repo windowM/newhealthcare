@@ -28,15 +28,16 @@ public class DandPService {
 
     public Header create(Header<DandPApiResponse> response){
         DandPApiResponse dandPApiResponse=response.getData();
-        DandP dandP=dandPRepository.findByCode(dandPApiResponse.getCode());
-        if(dandP==null) {
-            dandP = DandP.builder()
+        Optional<DandP> dandP=dandPRepository.findByCode(dandPApiResponse.getCode());
+        if(!dandP.isPresent()) {
+            DandP dandP1=dandP.get();
+            dandP1 = DandP.builder()
                     .code(dandPApiResponse.getCode())
                     .patientId(patientRepository.getReferenceById(dandPApiResponse.getPatientId()))
                     .doctorId(doctorRepository.getReferenceById(dandPApiResponse.getDoctorId()))
                     .build();
 
-            DandP newDandP = dandPRepository.save(dandP);
+            DandP newDandP = dandPRepository.save(dandP1);
             return Header.OK();
         }
         else{

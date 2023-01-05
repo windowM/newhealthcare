@@ -26,12 +26,14 @@ public class PatientController implements CrudInterface<PatientApiRequest, Patie
     @Autowired
     private DandPService dandPService;
 
+    //환자 로그인
     @PostMapping("/login")
-    public Header<PatientApiResponse> login(@RequestBody Header<PatientApiRequest> request){
+    public Header login(@RequestBody Header<PatientApiRequest> request){
         log.info("patinet login: {}",request);
         return patientService.login(request);
     }
 
+    //환자 회원가입
     @Override
     @PostMapping("/signup")
     public Header<PatientApiResponse> create(@RequestBody Header<PatientApiRequest> request) {
@@ -39,6 +41,7 @@ public class PatientController implements CrudInterface<PatientApiRequest, Patie
         return patientService.create(request);
     }
 
+    //환자 홈 화면
     @Override
     @GetMapping("{id}")
     public Header<PatientApiResponse> read(@PathVariable String id) {
@@ -60,11 +63,11 @@ public class PatientController implements CrudInterface<PatientApiRequest, Patie
         }
     }
 
-    //환자와 연결된 의사 명단 출력
-    @GetMapping("{id}/conDocList")
-    public Header<PatientApiResponse> showDoctorList(@PathVariable String id){
-        return patientService.showDoctorList(id);
-    }
+//    //환자와 연결된 의사 명단 출력
+//    @GetMapping("{id}/conDocList")
+//    public Header<PatientApiResponse> showDoctorList(@PathVariable String id){
+//        return patientService.showDoctorList(id);
+//    }
 
     /* ============================ 환자 info =======================*/
 

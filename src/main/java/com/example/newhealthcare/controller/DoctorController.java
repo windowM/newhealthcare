@@ -6,6 +6,7 @@ import com.example.newhealthcare.dto.ResultDTO;
 import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.network.request.DoctorApiRequest;
 import com.example.newhealthcare.model.network.response.DoctorApiResponse;
+import com.example.newhealthcare.model.network.response.DoctorHomeApiResponse;
 import com.example.newhealthcare.service.DoctorService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,7 @@ public class DoctorController implements CrudInterface<DoctorApiRequest,DoctorAp
 
     //의사 로그인
     @PostMapping("/login")
-    public Header<DoctorApiResponse> login(@RequestBody Header<DoctorApiRequest> request){
+    public Header login(@RequestBody Header<DoctorApiRequest> request){
         log.info("{}",request);
         return doctorService.login(request);
     }
@@ -37,12 +38,13 @@ public class DoctorController implements CrudInterface<DoctorApiRequest,DoctorAp
 
     //로그인 성공시 {id} 의사정보 넘기기
     @Override
-    @GetMapping("{id}")
-    public Header<DoctorApiResponse> read(@PathVariable("id") String id) {
+    @GetMapping("/{id}")
+    public Header<DoctorApiResponse> read(@PathVariable String id) {
         log.info("read id : {}",id);
         return doctorService.read(id);
     }
 
+    //!!!!!!!!!!!!!!!!!!!!!수정 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //의사 정보 수정
     @Override
     @PutMapping("{id}/info/update")
@@ -52,8 +54,8 @@ public class DoctorController implements CrudInterface<DoctorApiRequest,DoctorAp
 
     //코드 발급
     @PutMapping("{id}/code")
-    public Header updateCode(@RequestBody Header<DoctorApiRequest> doctorApiRequest){
-        return doctorService.updateCode(doctorApiRequest);
+    public Header updateCode(@PathVariable String id,@RequestBody Header<DoctorApiRequest> doctorApiRequest){
+        return doctorService.updateCode(id,doctorApiRequest);
     }
 
     //의사 회원 삭제

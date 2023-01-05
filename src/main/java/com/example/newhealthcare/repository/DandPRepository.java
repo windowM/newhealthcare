@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface DandPRepository extends JpaRepository<DandP,Long> {
-    DandP findByCode(String code);
+    Optional<DandP> findByCode(String code);
     Optional<DandP> findByDoctorId(Doctor id);
     Optional<DandP> findByPatientId(Patient id);
 

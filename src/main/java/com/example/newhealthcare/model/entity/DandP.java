@@ -30,13 +30,11 @@ public class DandP extends BaseEntity {
 
     //DandP N:1 Doctor
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name="doctor")
     private Doctor doctorId;
 
     //DandP N:1 Patient
     @ManyToOne
-    @JsonIgnore
     @JoinColumn(name="patient")
     private Patient patientId;
 
