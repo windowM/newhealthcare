@@ -39,6 +39,8 @@ public class Patient extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
+    private String gender;
+
     //Patient 1 : N DandP
     //mappedBy= DandP테이블의 외래키
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "patientId")

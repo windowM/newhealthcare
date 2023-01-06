@@ -1,20 +1,14 @@
 package com.example.newhealthcare.controller;
 
 import com.example.newhealthcare.Header;
-import com.example.newhealthcare.dto.dandpdto.DandPResponseDTO;
 import com.example.newhealthcare.itf.CrudInterface;
-import com.example.newhealthcare.model.entity.Patient;
-import com.example.newhealthcare.model.network.request.DandPApiRequest;
 import com.example.newhealthcare.model.network.request.PatientApiRequest;
-import com.example.newhealthcare.model.network.response.DandPApiResponse;
 import com.example.newhealthcare.model.network.response.PatientApiResponse;
 import com.example.newhealthcare.service.DandPService;
 import com.example.newhealthcare.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 @Slf4j
 @RestController
@@ -53,21 +47,11 @@ public class PatientController implements CrudInterface<PatientApiRequest, Patie
     /*====================== 환자와 의사 코드 관련 ==================*/
 
     //환자 코드 입력
-    @PostMapping("{id}/code")
-    public Header inputCode(@RequestBody Header<PatientApiRequest> request){
-        Header<DandPApiResponse> dandPApiResponse= patientService.inputCode(request);
-        if(dandPApiResponse.getResult().equals("Fail")){
-            return dandPApiResponse;
-        }else{
-            return dandPService.create(dandPApiResponse);
-        }
-    }
 
-//    //환자와 연결된 의사 명단 출력
-//    @GetMapping("{id}/conDocList")
-//    public Header<PatientApiResponse> showDoctorList(@PathVariable String id){
-//        return patientService.showDoctorList(id);
-//    }
+    @PostMapping("{id}/code")
+    public Header inputCode(@PathVariable String id,@RequestBody Header<PatientApiRequest> request){
+        return patientService.inputCode(id,request);
+    }
 
     /* ============================ 환자 info =======================*/
 

@@ -30,6 +30,9 @@ public class Doctor extends BaseEntity {
     private String major;
 
     private String code;
+
+    private String gender;
+
     //Doctor 1 : N DandP
     //cascadeType.Remove= 의사가 삭제될시 환자들도 모두 삭제 (어디 테이블의 환자까지 적용 될진 모름)
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "doctorId")

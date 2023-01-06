@@ -1,12 +1,11 @@
 package com.example.newhealthcare.model.network.request;
 
-import com.example.newhealthcare.dto.patientdto.PatientResponseDTO;
+import com.example.newhealthcare.dto.PatientResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
 import java.util.List;
 
 @Data
@@ -18,6 +17,8 @@ public class DoctorApiRequest {
     private String doctorId;
 
     private String password;
+
+    private String gender;
 
     private String email;
 

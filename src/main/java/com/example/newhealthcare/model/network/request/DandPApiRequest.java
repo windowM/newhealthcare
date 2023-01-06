@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @Builder
 public class DandPApiRequest {
+
     private Long connectSq;
 
     private String doctorId;

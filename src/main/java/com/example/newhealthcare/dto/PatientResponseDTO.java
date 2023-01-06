@@ -1,4 +1,4 @@
-package com.example.newhealthcare.dto.patientdto;
+package com.example.newhealthcare.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +10,8 @@ import javax.validation.constraints.Email;
 @Builder
 @Data
 public class PatientResponseDTO {
+
+    private String gender;
 
     private String born;
 

@@ -13,23 +13,30 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString(exclude = {"doctorId","prescriptionList"})
+@SequenceGenerator(
+        name = "dia_seq",
+        sequenceName = "diagnosis_seq", //매핑할 데이터베이스 시퀀스 이름
+        initialValue = 10000,
+        allocationSize = 1
+)
 public class Diagnosis {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dia_seq")
     @Column(name="dia_num")
     private Long diaNum;
 
     @ManyToOne
+    @JoinColumn(name="doctor")
     private Doctor doctorId;
 
-    @Column(name="sel_patient_id")
+    @Column(name="select_patient")
     private String selPatientId;
 
     private String disease;  //병 이름
 
     private String contents; //진단 내용
 
+    @Column(name="dia_date")
     private String diaDate; //진단 날짜
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "diaNum")

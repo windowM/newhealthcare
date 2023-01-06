@@ -1,19 +1,15 @@
 package com.example.newhealthcare.controller;
 
 import com.example.newhealthcare.Header;
-import com.example.newhealthcare.dto.doctordto.DoctorResponseDTO;
-import com.example.newhealthcare.dto.ResultDTO;
 import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.network.request.DoctorApiRequest;
 import com.example.newhealthcare.model.network.response.DoctorApiResponse;
-import com.example.newhealthcare.model.network.response.DoctorHomeApiResponse;
 import com.example.newhealthcare.service.DoctorService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 @Slf4j
 @RestController // Json 형태로 객체 데이터를 반환
 @RequestMapping("/doctor")

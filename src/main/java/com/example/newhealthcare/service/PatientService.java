@@ -1,14 +1,12 @@
 package com.example.newhealthcare.service;
 
 import com.example.newhealthcare.Header;
-import com.example.newhealthcare.dto.dandpdto.DandPResponseDTO;
-import com.example.newhealthcare.dto.patientdto.PatientResponseDTO;
+import com.example.newhealthcare.dto.DoctorResponseDTO;
 import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.entity.DandP;
 import com.example.newhealthcare.model.entity.Doctor;
 import com.example.newhealthcare.model.entity.Patient;
 import com.example.newhealthcare.model.network.request.PatientApiRequest;
-import com.example.newhealthcare.model.network.response.DandPApiResponse;
 import com.example.newhealthcare.model.network.response.PatientApiResponse;
 import com.example.newhealthcare.repository.DandPRepository;
 import com.example.newhealthcare.repository.DoctorRepository;
@@ -18,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +54,7 @@ public class PatientService  implements CrudInterface<PatientApiRequest, Patient
             Patient Patient1=Patient.builder().
                         patientId(patientApiRequest.getPatientId()).
                         password(patientApiRequest.getPassword()).
+                        gender(patientApiRequest.getGender()).
                         born(patientApiRequest.getBorn()).
                         email(patientApiRequest.getEmail()).
                         name(patientApiRequest.getName()).
@@ -70,28 +68,36 @@ public class PatientService  implements CrudInterface<PatientApiRequest, Patient
         }
     }
 
-    //
+    //환자 홈 화면 데이터 제공
     @Override
     public Header<PatientApiResponse> read(String id) {
-        Optional<Patient> patient=patientRepository.findById(id);
-        return patient.map(selectPatient->{
-            System.out.println(selectPatient.getDandpList());
-            selectPatient.getDandpList().stream().forEach(dandp-> {
-                System.out.println("==========");
-                System.out.println(dandp.getDoctorId());
-                System.out.println(dandp.getPatientId());
-            });
+        Optional<Patient> patient = patientRepository.findById(id);
+        return patient
+                .map(patient1 -> {
+                    List<DoctorResponseDTO> doctorResponseDTOS = new ArrayList<DoctorResponseDTO>();
+                    patient1.getDandpList().stream().forEach(dandP -> {
+                        DoctorResponseDTO doctorResponseDTO = DoctorResponseDTO.builder()
+                                .name(dandP.getDoctorId().getName())
+                                .gender(dandP.getDoctorId().getGender())
+                                .phone(dandP.getDoctorId().getPhone())
+                                .major(dandP.getDoctorId().getMajor())
+                                .email(dandP.getDoctorId().getEmail())
+                                .build();
+                        doctorResponseDTOS.add(doctorResponseDTO);
+                    });
 
-            return response(selectPatient);
+                    PatientApiResponse patientApiResponse = PatientApiResponse.builder()
+                            .patientId(patient1.getPatientId())
+                            .email(patient1.getEmail())
+                            .name(patient1.getName())
+                            .gender(patient1.getGender())
+                            .born(patient1.getBorn())
+                            .doctorId(doctorResponseDTOS)
+                            .build();
+                    return Header.OK(patientApiResponse);
 
-        }).orElseGet(()->Header.ERROR("정보 없음"));
+                }).orElseGet(() -> Header.ERROR("정보 없음"));
     }
-
-//    //환자와 연결된 의사들 출력
-//    public Header<PatientApiResponse> showDoctorList(String id){
-//
-//
-//    }
 
     //환자 정보 수정
     @Override
@@ -112,22 +118,29 @@ public class PatientService  implements CrudInterface<PatientApiRequest, Patient
     }
 
     //회원 코드번호 입력
-    public Header<DandPApiResponse> inputCode(Header<PatientApiRequest> request){
-        PatientApiRequest patientApiRequest=request.getData();
-        Optional<Patient> patient=patientRepository.findById(patientApiRequest.getPatientId());
-        return (Header<DandPApiResponse>) patient.map(patient1 -> {
-            Doctor doctor=doctorRepository.findByCode(patientApiRequest.getCode());
-            if(doctor!=null){
-                DandPApiResponse dandPApiResponse=DandPApiResponse.builder()
-                        .code(patientApiRequest.getCode())
-                        .doctorId(doctor.getDoctorId())
-                        .patientId(patientApiRequest.getPatientId())
-                        .build();
-                return Header.OK(dandPApiResponse);
-            }
-            else{
-                return Header.ERROR("코드번호에 할당된 의사가 없음");
-            }
+    public Header inputCode(String id,Header<PatientApiRequest> request){
+        PatientApiRequest patientApiRequest= request.getData();
+        Optional<Patient> patient=patientRepository.findById(id);
+        return patient
+                .map(patient1 ->{
+                    Optional<Doctor> doctor1=doctorRepository.findByCode(patientApiRequest.getCode());
+                    Optional<DandP> dandp=dandPRepository.findByCode(patientApiRequest.getCode());
+                    //기존 연결된 코드번호가 요청 되었을때 예외 처리
+                    if(dandp.isPresent()){
+                        return Header.ERROR("이미 매칭된 코드 번호입니다.");
+                    }else if(!doctor1.isPresent()){
+                        return Header.ERROR("코드와 연관된 의사를 찾을 수 없습니다.");
+                    }
+                    else {
+                        Doctor conDoc=doctor1.get();
+                        DandP dandP1 = DandP.builder()
+                                .code(patientApiRequest.getCode())
+                                .patientId(patient1)
+                                .doctorId(conDoc)
+                                .build();
+                        dandPRepository.save(dandP1);
+                        return Header.OK();
+                    }
         }).orElseGet(()->Header.ERROR("환자 정보가 없음"));
     }
 
@@ -146,6 +159,7 @@ public class PatientService  implements CrudInterface<PatientApiRequest, Patient
         PatientApiResponse patientApiResponse= PatientApiResponse.builder().
                 patientId(patient.getPatientId()).
                 password(patient.getPassword()).
+                gender(patient.getGender()).
                 born(patient.getBorn()).
                 email(patient.getEmail()).
                 name(patient.getName()).

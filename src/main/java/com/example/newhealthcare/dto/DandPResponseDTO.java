@@ -1,4 +1,4 @@
-package com.example.newhealthcare.dto.dandpdto;
+package com.example.newhealthcare.dto;
 
 import com.example.newhealthcare.model.entity.Doctor;
 import com.example.newhealthcare.model.entity.Patient;

@@ -1,7 +1,7 @@
 package com.example.newhealthcare.service;
 
 import com.example.newhealthcare.Header;
-import com.example.newhealthcare.dto.patientdto.PatientResponseDTO;
+import com.example.newhealthcare.dto.PatientResponseDTO;
 import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.entity.DandP;
 import com.example.newhealthcare.model.entity.Doctor;
@@ -49,6 +49,7 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
             Doctor doctor1 = Doctor.builder().
                     doctorId(doctorApiRequest.getDoctorId()).
                     password(doctorApiRequest.getPassword()).
+                    gender(doctorApiRequest.getGender()).
                     name(doctorApiRequest.getName()).
                     email(doctorApiRequest.getEmail()).
                     phone(doctorApiRequest.getPhone()).
@@ -77,6 +78,7 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
                                 .born(dandP.getPatientId().getBorn())
                                 .name(dandP.getPatientId().getName())
                                 .phone(dandP.getPatientId().getPhone())
+                                .gender(dandP.getPatientId().getGender())
                                 .build();
                         patientResponseDTOS.add(patientResponseDTO);
                     });
@@ -85,6 +87,7 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
                             .doctorId(doctor1.getDoctorId())
                             .email(doctor1.getEmail())
                             .name(doctor1.getName())
+                            .gender(doctor1.getGender())
                             .major(doctor1.getMajor())
                             .code(doctor1.getCode())
                             .patientId(patientResponseDTOS)
@@ -150,13 +153,13 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
         DoctorApiResponse doctorApiResponse=DoctorApiResponse.builder().
                 doctorId(doctor.getDoctorId()).
                 password(doctor.getPassword()).  //암호화 필요
+                gender(doctor.getGender()).
                 name(doctor.getName()).
                 email(doctor.getEmail()).
                 phone(doctor.getPhone()).
                 major(doctor.getMajor()).
                 //patientId(doctor.getDandpList()).
                 build();
-
 
         //header + data => return
         return Header.OK(doctorApiResponse);
