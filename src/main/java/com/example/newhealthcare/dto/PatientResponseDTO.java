@@ -11,6 +11,8 @@ import javax.validation.constraints.Email;
 @Data
 public class PatientResponseDTO {
 
+    private String patientId;
+
     private String gender;
 
     private String born;

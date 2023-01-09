@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class DiagnosisApiResponse {
+public class DiagnosisApiResponse{
 
     private Long diaNum;
 

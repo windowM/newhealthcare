@@ -14,15 +14,15 @@ import java.util.List;
 @NoArgsConstructor
 @ToString(exclude = {"doctorId","prescriptionList"})
 @SequenceGenerator(
-        name = "dia_seq",
+        name = "diagnosis_seq",
         sequenceName = "diagnosis_seq", //매핑할 데이터베이스 시퀀스 이름
         initialValue = 10000,
         allocationSize = 1
 )
 public class Diagnosis {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dia_seq")
-    @Column(name="dia_num")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "diagnosis_seq")
+    @Column(name="diagnosis_num")
     private Long diaNum;
 
     @ManyToOne

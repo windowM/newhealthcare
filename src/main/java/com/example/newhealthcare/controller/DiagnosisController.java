@@ -8,21 +8,28 @@ import com.example.newhealthcare.service.DiagnosisService;
 import com.example.newhealthcare.service.DoctorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController // Json 형태로 객체 데이터를 반환
-@RequestMapping("/doctor/diagnosis")
+@RequestMapping("/{user}/{id}/diagnosis")   //doctor/aaaa/diagnosis
 public class DiagnosisController {
+
     @Autowired
     private DiagnosisService diagnosisService;
 
-    @PostMapping("/")
-    public Header create(@RequestBody Header<DiagnosisApiRequest> request){
-        return diagnosisService.create(request);
-    }
+    @Autowired
+    private DoctorService doctorService;
 
+    //진단 조회
+//    @GetMapping("")
+//    public  Header<> read(@PathVariable String id){
+//        return diagnosisService.read(id);
+//    }
+
+    //진단 추가
+    @PostMapping("")
+    public Header create(@PathVariable String id,@RequestBody Header<DiagnosisApiRequest> request){
+        return diagnosisService.create(id,request);
+    }
 }

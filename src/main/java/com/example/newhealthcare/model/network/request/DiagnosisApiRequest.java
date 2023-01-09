@@ -11,7 +11,8 @@ import java.util.List;
 public class DiagnosisApiRequest {
     private Long diaNum;
 
-    private List<DoctorResponseDTO> doctorId;
+    private String doctorId;
+    //private List<DoctorResponseDTO> doctorId;
 
     private String selectPatientId;
 
