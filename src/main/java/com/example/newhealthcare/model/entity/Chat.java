@@ -15,6 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Chat {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="chat_sequence")
@@ -27,4 +28,5 @@ public class Chat {
     private String msg;
 
     private String sendDate;
+
 }
