@@ -2,8 +2,8 @@ package com.example.newhealthcare.controller;
 
 import com.example.newhealthcare.Header;
 import com.example.newhealthcare.itf.CrudInterface;
-import com.example.newhealthcare.model.network.request.DoctorApiRequest;
-import com.example.newhealthcare.model.network.response.DoctorApiResponse;
+import com.example.newhealthcare.model.network.request.doctor.DoctorApiRequest;
+import com.example.newhealthcare.model.network.response.doctor.DoctorApiResponse;
 import com.example.newhealthcare.service.DoctorService;
 
 import lombok.extern.slf4j.Slf4j;

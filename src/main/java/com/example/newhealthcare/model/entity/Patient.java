@@ -44,12 +44,15 @@ public class Patient extends BaseEntity {
     //Patient 1 : N DandP
     //mappedBy= DandP테이블의 외래키
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "patientId")
+    @OrderBy(value = "connectSq asc")
     private List<DandP> dandpList;
 
     //Patient 1 : N Sensor
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "patientId")
+    @OrderBy(value = "sq asc")
     private List<Sensor> sensorList;
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "patientId")
+    @OrderBy(value = "resNum asc")
     private List<Reservation> reservationList;
 }

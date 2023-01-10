@@ -1,14 +1,11 @@
-package com.example.newhealthcare.model.network.request;
+package com.example.newhealthcare.model.network.request.doctor;
 
-import com.example.newhealthcare.dto.DoctorResponseDTO;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Builder
-public class DiagnosisApiRequest {
+public class DoctorDiagnosisApiRequest {
     private Long diaNum;
 
     private String doctorId;
@@ -21,4 +18,5 @@ public class DiagnosisApiRequest {
     private String contents;
 
     private String diaDate;
+
 }

@@ -40,5 +40,6 @@ public class Diagnosis {
     private String diaDate; //진단 날짜
 
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "diaNum")
+    @OrderBy(value = "preNum asc")
     private List<Prescription> prescriptionList;
 }

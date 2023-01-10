@@ -1,9 +1,7 @@
 package com.example.newhealthcare.controller;
 
 import com.example.newhealthcare.Header;
-import com.example.newhealthcare.model.network.request.DiagnosisApiRequest;
-import com.example.newhealthcare.model.network.response.DiagnosisApiResponse;
-import com.example.newhealthcare.repository.DiagnosisRepository;
+import com.example.newhealthcare.model.network.request.doctor.DoctorDiagnosisApiRequest;
 import com.example.newhealthcare.service.DiagnosisService;
 import com.example.newhealthcare.service.DoctorService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +20,14 @@ public class DiagnosisController {
     private DoctorService doctorService;
 
     //진단 조회
-//    @GetMapping("")
-//    public  Header<> read(@PathVariable String id){
-//        return diagnosisService.read(id);
-//    }
+    @GetMapping("")
+    public  Header<?> read(@PathVariable String user, @PathVariable String id){
+        return diagnosisService.read(user,id);
+    }
 
     //진단 추가
     @PostMapping("")
-    public Header create(@PathVariable String id,@RequestBody Header<DiagnosisApiRequest> request){
-        return diagnosisService.create(id,request);
+    public Header create(@PathVariable String user,@PathVariable String id,@RequestBody Header<DoctorDiagnosisApiRequest> request){
+        return diagnosisService.create(user,id,request);
     }
 }

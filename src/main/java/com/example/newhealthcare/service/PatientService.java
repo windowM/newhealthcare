@@ -6,8 +6,8 @@ import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.entity.DandP;
 import com.example.newhealthcare.model.entity.Doctor;
 import com.example.newhealthcare.model.entity.Patient;
-import com.example.newhealthcare.model.network.request.PatientApiRequest;
-import com.example.newhealthcare.model.network.response.PatientApiResponse;
+import com.example.newhealthcare.model.network.request.patient.PatientApiRequest;
+import com.example.newhealthcare.model.network.response.patient.PatientApiResponse;
 import com.example.newhealthcare.repository.DandPRepository;
 import com.example.newhealthcare.repository.DoctorRepository;
 import com.example.newhealthcare.repository.PatientRepository;
@@ -117,7 +117,7 @@ public class PatientService  implements CrudInterface<PatientApiRequest, Patient
         .orElseGet(()->Header.ERROR("환자정보 없음"));
     }
 
-    //회원 코드번호 입력
+    //환자 코드번호 입력
     public Header inputCode(String id,Header<PatientApiRequest> request){
         PatientApiRequest patientApiRequest= request.getData();
         Optional<Patient> patient=patientRepository.findById(id);

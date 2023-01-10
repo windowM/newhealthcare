@@ -1,4 +1,4 @@
-package com.example.newhealthcare.model.network.response;
+package com.example.newhealthcare.model.network.response.patient;
 
 import com.example.newhealthcare.dto.DoctorResponseDTO;
 import lombok.AllArgsConstructor;
