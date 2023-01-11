@@ -20,6 +20,7 @@ import javax.persistence.*;
         sequenceName = "customer_seq",
         initialValue = 1,
         allocationSize = 1
+
 )
 public class DandP extends BaseEntity {
 

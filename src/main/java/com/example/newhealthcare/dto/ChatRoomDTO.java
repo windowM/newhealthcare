@@ -1,24 +1,38 @@
 package com.example.newhealthcare.dto;
 
-import lombok.Data;
+import com.example.newhealthcare.service.ChatService;
+import lombok.Builder;
+import lombok.Getter;
+import org.springframework.web.socket.WebSocketSession;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.HashSet;
+import java.util.Set;
+import org.springframework.web.socket.WebSocketSession;
+import java.util.HashSet;
 
-@Data
+@Getter
 public class ChatRoomDTO {
-    private String roomId; // 채팅방 아이디
-    private String roomName; // 채팅방 이름
-    private long userCount; // 채팅방 인원수
+    private String roomId;
+    private String name;
+    private Set<WebSocketSession> sessions = new HashSet<>();
 
-    private HashMap<String, String> userlist = new HashMap<String, String>();
-
-    public ChatRoomDTO create(String roomName){
-        ChatRoomDTO chatRoom = new ChatRoomDTO();
-        chatRoom.roomId = UUID.randomUUID().toString();
-        chatRoom.roomName = roomName;
-
-        return chatRoom;
+    @Builder
+    public ChatRoomDTO(String roomId, String name) {
+        this.roomId = roomId;
+        this.name = name;
     }
 
+    public void handlerActions(WebSocketSession session, ChatDTO chatMessage, ChatService chatService) {
+        System.out.println("enter");
+        if (chatMessage.getType().equals(ChatDTO.MessageType.ENTER)) {
+            sessions.add(session);
+            chatMessage.setMessage(chatMessage.getSender() + "님이 입장했습니다.");
+        }
+        sendMessage(chatMessage, chatService);
+    }
+
+    private <T> void sendMessage(T message, ChatService chatService) {
+        sessions.parallelStream()
+                .forEach(session -> chatService.sendMessage(session, message));
+    }
 }

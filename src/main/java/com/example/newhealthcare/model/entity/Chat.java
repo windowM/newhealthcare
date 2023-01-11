@@ -14,12 +14,18 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@SequenceGenerator(
+        name = "chat_seq",
+        sequenceName = "chat_seq",
+        initialValue = 1,
+        allocationSize = 1
+)
 public class Chat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chat_seq")
     @Column(name="chat_sequence")
-    private Long sq;
+    private Long chatSequence;
 
     private String sender;
 
@@ -28,5 +34,9 @@ public class Chat {
     private String msg;
 
     private String sendDate;
+
+    @ManyToOne
+    @JoinColumn(name="room_id")
+    private ChatRoom roomId;
 
 }
