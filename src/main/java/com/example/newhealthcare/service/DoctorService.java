@@ -69,6 +69,7 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
     //로그인 시 해당 의사 정보 보내주기
     @Override
     public Header<DoctorApiResponse> read(String id) {
+
         Optional<Doctor> doctor=doctorRepository.findById(id);
         return doctor
                 .map(doctor1 -> {

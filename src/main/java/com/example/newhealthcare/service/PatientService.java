@@ -139,6 +139,7 @@ public class PatientService  implements CrudInterface<PatientApiRequest, Patient
                                 .doctorId(conDoc)
                                 .build();
                         dandPRepository.save(dandP1);
+
                         return Header.OK();
                     }
         }).orElseGet(()->Header.ERROR("환자 정보가 없음"));

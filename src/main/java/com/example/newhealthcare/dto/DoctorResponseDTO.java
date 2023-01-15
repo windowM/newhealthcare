@@ -13,6 +13,8 @@ import javax.validation.constraints.Pattern;
 @Data
 public class DoctorResponseDTO {
 
+    private String id;
+
     private String name;
 
     private String gender;
