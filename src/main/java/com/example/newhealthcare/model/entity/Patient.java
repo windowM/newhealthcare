@@ -53,6 +53,6 @@ public class Patient extends BaseEntity {
     private List<Sensor> sensorList;
 
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "patientId")
-    @OrderBy(value = "resNum asc")
+    @OrderBy(value = "resDate asc,resTime asc")
     private List<Reservation> reservationList;
 }

@@ -35,6 +35,9 @@ public class Reservation extends BaseEntity {
     private String contents; //예약 사유
 
     //1~8 : 9:00, 9:30, 10:00, 10:30, 14:00, 14:30, 15:00, 15:30
+    @Column(name="res_time")
+    private int resTime;
+
     @Column(name="res_date")
-    private int resDate;
+    private String resDate;
 }

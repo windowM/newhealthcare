@@ -19,6 +19,8 @@ public class ReservationApiRequest {
 
     private String contents;
 
-    private int resDate;
+    private int resTime;
+
+    private String resDate;
 
 }

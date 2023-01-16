@@ -1,7 +1,7 @@
 package com.example.newhealthcare.model.network.response;
 
-import com.example.newhealthcare.dto.DateDTO;
 import com.example.newhealthcare.dto.DoctorResponseDTO;
+import com.example.newhealthcare.dto.ReservationInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,11 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationDateApiResponse {
+public class ReservationHomeApiResponse {
+
+    //connect 의사 정보
     private List<DoctorResponseDTO> doctor;
-    private List<DateDTO> dateDTOList;
+
+    //예약 정보
+    private List<ReservationInfoDTO> reservationList;
 }
