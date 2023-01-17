@@ -1,4 +1,4 @@
-package com.example.newhealthcare.model.network.request;
+package com.example.newhealthcare.model.network.request.reservation;
 
 import com.example.newhealthcare.model.entity.Doctor;
 import com.example.newhealthcare.model.entity.Patient;

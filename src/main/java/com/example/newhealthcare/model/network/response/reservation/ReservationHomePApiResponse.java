@@ -1,4 +1,4 @@
-package com.example.newhealthcare.model.network.response;
+package com.example.newhealthcare.model.network.response.reservation;
 
 import com.example.newhealthcare.dto.DoctorResponseDTO;
 import com.example.newhealthcare.dto.ReservationInfoDTO;
@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReservationHomeApiResponse {
+public class ReservationHomePApiResponse {
 
     //connect 의사 정보
     private List<DoctorResponseDTO> doctor;
