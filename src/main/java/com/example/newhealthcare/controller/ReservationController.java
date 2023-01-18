@@ -2,6 +2,7 @@ package com.example.newhealthcare.controller;
 
 import com.example.newhealthcare.Header;
 import com.example.newhealthcare.itf.CrudInterface;
+import com.example.newhealthcare.model.entity.Reservation;
 import com.example.newhealthcare.model.network.request.reservation.ReservationApiRequest;
 import com.example.newhealthcare.model.network.request.ReservationDateApiRequest;
 import com.example.newhealthcare.model.network.response.reservation.ReservationApiResponse;
@@ -38,9 +39,19 @@ public class ReservationController implements CrudInterface<ReservationApiReques
         return reservationService.showDate(id,request);
     }
 
+
+
+    //의사 : 예약 홈화면에서 예약환자들 리스트를 보여줌
     @GetMapping("/doctor/{id}/reservation")
     public Header<?> showPatientResList(@PathVariable String id){
         return reservationService.showPatientResList(id);
+    }
+
+    //의사 : 날짜로 예약상태 조회
+    @PostMapping("/doctor/{id}/reservation/search")
+    public Header<ReservationDateApiResponse> search(@PathVariable String id,@RequestBody Header<ReservationApiRequest> request){
+        //return reservationService.search(id,request);
+        return null;
     }
 
     @Override

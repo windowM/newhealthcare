@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     List<Reservation> findBySelDoctorId(String doctorId);
-
-
     List<Reservation> findByPatientId(Patient patient);
+    List<Reservation> findByResDateContaining(String resDate);
+
 }

@@ -7,6 +7,7 @@ import com.example.newhealthcare.dto.ReservationDoctorDTO;
 import com.example.newhealthcare.dto.ReservationInfoDTO;
 import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.entity.DandP;
+import com.example.newhealthcare.model.entity.Doctor;
 import com.example.newhealthcare.model.entity.Patient;
 import com.example.newhealthcare.model.entity.Reservation;
 import com.example.newhealthcare.model.network.request.reservation.ReservationApiRequest;
@@ -125,7 +126,7 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
         return Header.OK(response);
     }
 
-    //예약시 가능한 의사별 시간대를 return
+    //환자 :예약시 가능한 의사별 시간대를 return
     public Header<ReservationDateApiResponse> showDate(String id, Header<ReservationDateApiRequest> request){
         ReservationDateApiRequest request1=request.getData();
         Optional<Patient> patient=patientRepository.findById(id);
@@ -162,7 +163,8 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
         }
     }
 
-    //의사가 예약환자 조회
+
+    //의사 : 예약환자 조회
     public Header<?> showPatientResList(String id){
         List<Reservation> reservation=reservationRepository.findBySelDoctorId(id);
         if(!reservation.isEmpty()){
@@ -190,6 +192,18 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
         }
         return Header.ERROR("예약정보가 없습니다.");
     }
+
+    //의사 : 예약 날짜로 조회
+
+// 조회 기능 구현에 대해서는 오늘 회의해보고 구현하자.
+//    public Header<ReservationDateApiResponse> search(String id, Header<ReservationApiRequest> request){
+//        List<Reservation> reservationList=reservationRepository.findBySelDoctorId(id);
+//        if(!reservationList.isEmpty()){
+//            ReservationDateApiResponse response;
+//            ;
+//        }
+//        return Header.OK();
+//    }
 
     @Override
     public Header<ReservationApiResponse> update(Header<ReservationApiRequest> request) {
