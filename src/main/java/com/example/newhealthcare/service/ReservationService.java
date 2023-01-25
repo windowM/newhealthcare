@@ -7,7 +7,6 @@ import com.example.newhealthcare.dto.ReservationDoctorDTO;
 import com.example.newhealthcare.dto.ReservationInfoDTO;
 import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.entity.DandP;
-import com.example.newhealthcare.model.entity.Doctor;
 import com.example.newhealthcare.model.entity.Patient;
 import com.example.newhealthcare.model.entity.Reservation;
 import com.example.newhealthcare.model.network.request.reservation.ReservationApiRequest;
@@ -193,17 +192,39 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
         return Header.ERROR("예약정보가 없습니다.");
     }
 
-    //의사 : 예약 날짜로 조회
+    //의사 : 날짜로 예약일 조회
+    public Header<?> search(String id, Header<ReservationApiRequest> request){
+        ReservationApiRequest request1=request.getData();
+        List<Reservation> reservationList=reservationRepository.findByResDateContaining(request1.getResDate());
+        if(!reservationList.isEmpty()){
+            List<ReservationDoctorDTO> reservationDTOS=new ArrayList<ReservationDoctorDTO>();
+            for( int i=0;i< reservationList.size();i++) {
+                if(reservationList.get(i).getSelDoctorId().equals(id)) {
+                    PatientResponseDTO patientResponseDTO = PatientResponseDTO.builder()
+                            .patientId(reservationList.get(i).getPatientId().getPatientId())
+                            .born(reservationList.get(i).getPatientId().getBorn())
+                            .gender(reservationList.get(i).getPatientId().getGender())
+                            .name(reservationList.get(i).getPatientId().getName())
+                            .phone(reservationList.get(i).getPatientId().getPhone())
+                            .build();
 
-// 조회 기능 구현에 대해서는 오늘 회의해보고 구현하자.
-//    public Header<ReservationDateApiResponse> search(String id, Header<ReservationApiRequest> request){
-//        List<Reservation> reservationList=reservationRepository.findBySelDoctorId(id);
-//        if(!reservationList.isEmpty()){
-//            ReservationDateApiResponse response;
-//            ;
-//        }
-//        return Header.OK();
-//    }
+                    ReservationDoctorDTO reservationDTO = ReservationDoctorDTO.builder()
+                            .resNum(reservationList.get(i).getResNum())
+                            .patientId(patientResponseDTO)
+                            .contents(reservationList.get(i).getContents())
+                            .selDoctorId(reservationList.get(i).getSelDoctorId())
+                            .resDate(reservationList.get(i).getResDate())
+                            .resTime(reservationList.get(i).getResTime())
+                            .build();
+                    reservationDTOS.add(reservationDTO);
+                }else{
+                    continue;
+                }
+            }
+            return Header.OK(reservationDTOS);
+        }
+        return Header.OK();
+    }
 
     @Override
     public Header<ReservationApiResponse> update(Header<ReservationApiRequest> request) {
@@ -211,7 +232,12 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
     }
 
     @Override
-    public Header delete(String id) {
-        return null;
+    public Header delete(String num) {
+        Optional<Reservation> reservation=reservationRepository.findById(Long.parseLong(num));
+        return reservation.map(reservation1 -> {
+            reservationRepository.delete(reservation1);
+            return Header.OK();
+        })
+        .orElseGet(()->Header.ERROR("존재하지 않는 예약 번호"));
     }
 }

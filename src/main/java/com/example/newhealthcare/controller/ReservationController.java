@@ -9,12 +9,12 @@ import com.example.newhealthcare.model.network.response.reservation.ReservationA
 import com.example.newhealthcare.model.network.response.reservation.ReservationDateApiResponse;
 import com.example.newhealthcare.model.network.response.reservation.ReservationHomePApiResponse;
 import com.example.newhealthcare.service.ReservationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-
+@Slf4j
 @RestController
-@RequestMapping("")
 public class ReservationController implements CrudInterface<ReservationApiRequest, ReservationApiResponse> {
 
     @Autowired
@@ -49,9 +49,8 @@ public class ReservationController implements CrudInterface<ReservationApiReques
 
     //의사 : 날짜로 예약상태 조회
     @PostMapping("/doctor/{id}/reservation/search")
-    public Header<ReservationDateApiResponse> search(@PathVariable String id,@RequestBody Header<ReservationApiRequest> request){
-        //return reservationService.search(id,request);
-        return null;
+    public Header<?> search(@PathVariable String id,@RequestBody Header<ReservationApiRequest> request){
+        return reservationService.search(id,request);
     }
 
     @Override
@@ -65,8 +64,10 @@ public class ReservationController implements CrudInterface<ReservationApiReques
     }
 
     @Override
-    public Header delete(String id) {
-        return null;
+    @DeleteMapping("/{num}/reservation/delete")
+    public Header delete(@PathVariable String num) {
+        log.info("delete reservation number: "+num);
+        return reservationService.delete(num);
     }
 
 }
