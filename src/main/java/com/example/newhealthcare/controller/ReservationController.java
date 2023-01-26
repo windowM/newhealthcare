@@ -20,16 +20,16 @@ public class ReservationController implements CrudInterface<ReservationApiReques
     @Autowired
     private ReservationService reservationService;
 
+    //환자 : 예약 화면
+    @GetMapping("/patient/{id}/reservation")
+    public Header<ReservationHomePApiResponse> showDocList(@PathVariable String id){
+        return reservationService.show(id);
+    }
+
     @Override
     @PostMapping("/patient/reservation")
     public Header<ReservationApiResponse> create(@RequestBody Header<ReservationApiRequest> request) {
         return reservationService.create(request);
-    }
-
-    //환자 : 예약시 connect된 의사 리스트 보여줌
-    @GetMapping("/patient/{id}/reservation")
-    public Header<ReservationHomePApiResponse> showDocList(@PathVariable String id){
-        return reservationService.show(id);
     }
 
     //환자 : 의사id,날짜 선택시 예약가능 시간 보여줌
@@ -38,7 +38,6 @@ public class ReservationController implements CrudInterface<ReservationApiReques
     public Header<ReservationDateApiResponse> showDate(@PathVariable String id, @RequestBody Header<ReservationDateApiRequest> request){
         return reservationService.showDate(id,request);
     }
-
 
 
     //의사 : 예약 홈화면에서 예약환자들 리스트를 보여줌

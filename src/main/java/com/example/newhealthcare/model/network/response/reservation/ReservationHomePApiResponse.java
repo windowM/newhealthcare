@@ -2,6 +2,7 @@ package com.example.newhealthcare.model.network.response.reservation;
 
 import com.example.newhealthcare.dto.DoctorResponseDTO;
 import com.example.newhealthcare.dto.ReservationInfoDTO;
+import com.example.newhealthcare.dto.ReservationLastInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,4 +21,7 @@ public class ReservationHomePApiResponse {
 
     //예약 정보
     private List<ReservationInfoDTO> reservationList;
+
+    //지난 예약 정보 (3개월치)
+    private ReservationLastInfoDTO resLastList;
 }

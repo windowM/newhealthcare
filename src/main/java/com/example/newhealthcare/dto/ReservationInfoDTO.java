@@ -8,6 +8,8 @@ import lombok.Data;
 //예약 정보 dto
 public class ReservationInfoDTO {
 
+    private Long resNum;
+
     private String doctorName;
 
     private int resTime;

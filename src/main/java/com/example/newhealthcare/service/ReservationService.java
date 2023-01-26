@@ -1,10 +1,7 @@
 package com.example.newhealthcare.service;
 
 import com.example.newhealthcare.Header;
-import com.example.newhealthcare.dto.DoctorResponseDTO;
-import com.example.newhealthcare.dto.PatientResponseDTO;
-import com.example.newhealthcare.dto.ReservationDoctorDTO;
-import com.example.newhealthcare.dto.ReservationInfoDTO;
+import com.example.newhealthcare.dto.*;
 import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.entity.DandP;
 import com.example.newhealthcare.model.entity.Patient;
@@ -22,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -74,13 +73,22 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
         return null;
     }
 
-    //예약페이지 들어갈때 보내줄 데이터 (connect의사리스트 포함)
+    //예약페이지 들어갈때 보내줄 데이터
     public Header<ReservationHomePApiResponse> show(String id){
+
         Optional<Patient> patient=patientRepository.findById(id);
         List<DoctorResponseDTO> doctorResponseDTOS=new ArrayList<DoctorResponseDTO>();
         List<ReservationInfoDTO> reservationInfoDTOS=new ArrayList<ReservationInfoDTO>();
 
+        List<ReservationInfoDTO> one=new ArrayList<ReservationInfoDTO>();
+        List<ReservationInfoDTO> two=new ArrayList<ReservationInfoDTO>();
+        List<ReservationInfoDTO> three=new ArrayList<ReservationInfoDTO>();
+
         if(patient.isPresent()){
+            // 현재 날짜 구하기
+            LocalDate now = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
             List<DandP> dandPS= patient.get().getDandpList();
             List<Reservation> reservation= reservationRepository.findByPatientId(patient.get());
 
@@ -99,7 +107,6 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
 
                     doctorResponseDTOS.add(doctorResponseDTO);
                 }
-
             }
             if(reservation.isEmpty()) {
                 System.out.println("reservation.isempty()");
@@ -107,19 +114,43 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
                 //예약정보 보내줄때
                 for(int i=0;i< reservation.size();i++){
                     Reservation reservation1 = reservation.get(i);
+
+                    //yyyy/mm/dd -> yyyy-mm-dd 형식변환 (날짜 비교를 위해)
+                    LocalDate reservationDate=LocalDate.parse(reservation1.getResDate(),formatter);
+
                     ReservationInfoDTO reservationInfoDTO = ReservationInfoDTO.builder()
+                            .resNum(reservation1.getResNum())
                             .doctorName(reservation1.getSelDoctorId())
                             .resDate(reservation1.getResDate())
                             .resTime(reservation1.getResTime())
                             .build();
-                    reservationInfoDTOS.add(reservationInfoDTO);
+                    if(reservationDate.isEqual(now)||reservationDate.isAfter(now)){
+                        reservationInfoDTOS.add(reservationInfoDTO);
+                    }else{
+                        if(now.minusMonths(1).isBefore(reservationDate)){
+                            one.add(reservationInfoDTO);
+                        }else if(now.minusMonths(2).isBefore(reservationDate)){
+                            two.add(reservationInfoDTO);
+                        }else if(now.minusMonths(3).isBefore(reservationDate)){
+                            three.add(reservationInfoDTO);
+                        }else{
+                            continue;
+                        }
+                    }
                 }
             }
         }
+        ReservationLastInfoDTO reservationLastInfo= ReservationLastInfoDTO.builder()
+                .one(one)
+                .two(two)
+                .three(three)
+                .build();
+
         ReservationHomePApiResponse response=
                 ReservationHomePApiResponse.builder()
                         .doctor(doctorResponseDTOS)
                         .reservationList(reservationInfoDTOS)
+                        .resLastList(reservationLastInfo)
                         .build();
 
         return Header.OK(response);
