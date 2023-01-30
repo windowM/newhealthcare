@@ -26,9 +26,10 @@ public class ReservationController implements CrudInterface<ReservationApiReques
         return reservationService.show(id);
     }
 
+    //환자 : 예약 하기
     @Override
     @PostMapping("/patient/reservation")
-    public Header<ReservationApiResponse> create(@RequestBody Header<ReservationApiRequest> request) {
+    public Header create(@RequestBody Header<ReservationApiRequest> request) {
         return reservationService.create(request);
     }
 

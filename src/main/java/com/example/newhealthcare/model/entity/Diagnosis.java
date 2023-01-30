@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"doctorId","prescriptionList"})
+@ToString(exclude = {"doctorId","selPatientId"})
 @SequenceGenerator(
         name = "diagnosis_seq",
         sequenceName = "diagnosis_seq", //매핑할 데이터베이스 시퀀스 이름
@@ -20,6 +20,7 @@ import java.util.List;
         allocationSize = 1
 )
 public class Diagnosis {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "diagnosis_seq")
     @Column(name="diagnosis_num")
@@ -29,8 +30,9 @@ public class Diagnosis {
     @JoinColumn(name="doctor")
     private Doctor doctorId;
 
-    @Column(name="select_patient")
-    private String selPatientId;
+    @ManyToOne
+    @JoinColumn(name="select_patient")
+    private Patient selPatientId;
 
     private String disease;  //병 이름
 
@@ -42,4 +44,5 @@ public class Diagnosis {
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "diaNum")
     @OrderBy(value = "preNum asc")
     private List<Prescription> prescriptionList;
+
 }

@@ -3,6 +3,7 @@ package com.example.newhealthcare.model.entity;
 import com.example.newhealthcare.BaseEntity;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = {"dandpList","diagnosisList"})
+@DynamicInsert //null 값인 field는 제외하고 삽입
+//@ToString(exclude = {"dandpList","diagnosisList"})
 public class Doctor extends BaseEntity {
     @Id
     @Column(name="doctor_id")

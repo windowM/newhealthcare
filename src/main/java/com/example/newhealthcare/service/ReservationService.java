@@ -38,7 +38,7 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
     private final DandPRepository dandPRepository;
 
     @Override
-    public Header<ReservationApiResponse> create(Header<ReservationApiRequest> request) {
+    public Header create(Header<ReservationApiRequest> request) {
         ReservationApiRequest requestData=request.getData();
         Optional<Patient> patient=patientRepository.findById(requestData.getPatientId());
         List<Reservation> reservation=
@@ -59,7 +59,6 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
                 .selDoctorId(requestData.getSelDoctorId())
                 .contents(requestData.getContents())
                 .resTime(requestData.getResTime())
-                .resDate(requestData.getResDate())
                 .resDate(requestData.getResDate())
                 .build();
         reservationRepository.save(reservation1);

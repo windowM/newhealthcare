@@ -1,14 +1,19 @@
 package com.example.newhealthcare.dto;
 
 import com.example.newhealthcare.model.entity.Diagnosis;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+
+@Builder
+@Data
 public class DoctorPreResponseDTO {
     private Long preNum;
 
-    private Diagnosis diaNum;   //진단번호 참조
+    private Long diaNum;   //진단번호 참조
 
     private String contents; //특이사항 입력란
 

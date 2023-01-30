@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @DynamicInsert //null 값인 field는 제외하고 삽입
-//@ToString(exclude = {"dandpList","sensorList","reservationList"})
+//@ToString(exclude = {"dandpList","sensorList","reservationList","diagnosisList"})
 public class Patient extends BaseEntity {
 
     @Id
@@ -55,4 +55,9 @@ public class Patient extends BaseEntity {
     @OneToMany(fetch=FetchType.LAZY,mappedBy = "patientId")
     @OrderBy(value = "resDate asc,resTime asc")
     private List<Reservation> reservationList;
+
+    @OneToMany(fetch=FetchType.LAZY,mappedBy = "selPatientId")
+    @OrderBy(value = "diaDate asc")
+    private List<Diagnosis> diagnosisList;
+
 }
