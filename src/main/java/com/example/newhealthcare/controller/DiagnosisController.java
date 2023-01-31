@@ -7,6 +7,7 @@ import com.example.newhealthcare.model.network.request.DandPApiRequest;
 import com.example.newhealthcare.model.network.request.doctor.DoctorDiagnosisApiRequest;
 import com.example.newhealthcare.model.network.request.doctor.DoctorPreApiRequest;
 import com.example.newhealthcare.model.network.response.doctor.DoctorDiagnosisApiResponse;
+import com.example.newhealthcare.model.network.response.patient.PatientDiagnosisApiResponse;
 import com.example.newhealthcare.service.DiagnosisService;
 import com.example.newhealthcare.service.DoctorService;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,11 @@ public class DiagnosisController {
     @PostMapping("/doctor/{diaNum}/prescription")
     public Header preCreate(@PathVariable Long diaNum, @RequestBody Header<DoctorPreApiRequest> request){
         return diagnosisService.preCreate(diaNum,request);
+    }
+
+    @GetMapping("/patient/{id}/diagnosis")
+    public Header<PatientDiagnosisApiResponse> showList(@PathVariable String id){
+        return diagnosisService.showList(id);
     }
 
 }

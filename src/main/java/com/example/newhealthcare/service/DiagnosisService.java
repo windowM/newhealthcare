@@ -2,12 +2,15 @@ package com.example.newhealthcare.service;
 
 import com.example.newhealthcare.Header;
 import com.example.newhealthcare.dto.DoctorPreResponseDTO;
+import com.example.newhealthcare.dto.PatientDiagnosisResponseDTO;
+import com.example.newhealthcare.dto.PatientPreResponseDTO;
 import com.example.newhealthcare.dto.PatientResponseDTO;
 import com.example.newhealthcare.model.entity.*;
 import com.example.newhealthcare.model.network.request.DandPApiRequest;
 import com.example.newhealthcare.model.network.request.doctor.DoctorDiagnosisApiRequest;
 import com.example.newhealthcare.model.network.request.doctor.DoctorPreApiRequest;
 import com.example.newhealthcare.model.network.response.doctor.DoctorDiagnosisApiResponse;
+import com.example.newhealthcare.model.network.response.patient.PatientDiagnosisApiResponse;
 import com.example.newhealthcare.repository.DiagnosisRepository;
 import com.example.newhealthcare.repository.DoctorRepository;
 import com.example.newhealthcare.repository.PatientRepository;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -144,11 +148,11 @@ public class DiagnosisService {
     }
 
     //의사 : 처방 create
-    public Header preCreate(Long diaNum,Header<DoctorPreApiRequest> request) {
-        Optional<Diagnosis> diagnosis=diagnosisRepository.findById(diaNum);
-        if(diagnosis.isPresent()) {
-            DoctorPreApiRequest request1=request.getData();
-            Prescription prescription= Prescription.builder()
+    public Header preCreate(Long diaNum, Header<DoctorPreApiRequest> request) {
+        Optional<Diagnosis> diagnosis = diagnosisRepository.findById(diaNum);
+        if (diagnosis.isPresent()) {
+            DoctorPreApiRequest request1 = request.getData();
+            Prescription prescription = Prescription.builder()
                     .diaNum(diagnosis.get())
                     .contents(request1.getContents())
                     .preName(request1.getPreName())
@@ -160,8 +164,52 @@ public class DiagnosisService {
             prescriptionRepository.save(prescription);
 
             return Header.OK();
-        }else{
+        } else {
             return Header.ERROR("존재하지 않는 진단번호");
         }
+    }
+
+    //환자 : 진료 내역 화면
+    public Header<PatientDiagnosisApiResponse> showList(String id) {
+        Optional<Patient> patient = patientRepository.findById(id);
+        List<PatientDiagnosisResponseDTO> diagnosisResponseDTOS=new ArrayList<PatientDiagnosisResponseDTO>();
+
+        if (patient.isPresent()){
+           List<Diagnosis> diagnosisList=patient.get().getDiagnosisList();
+
+           for( int i =0;i< diagnosisList.size();i++){
+               List<Prescription> prescriptionList=diagnosisList.get(i).getPrescriptionList();
+               List<PatientPreResponseDTO> preResponseDTOS=new ArrayList<PatientPreResponseDTO>();
+
+               for(int j=0;j<prescriptionList.size();j++){
+                   PatientPreResponseDTO preResponseDTO=PatientPreResponseDTO.builder()
+                           .diaNum(prescriptionList.get(j).getDiaNum().getDiaNum())
+                           .preNum(prescriptionList.get(j).getPreNum())
+                           .preName(prescriptionList.get(j).getPreName())
+                           .preContents(prescriptionList.get(j).getContents())
+                           .oneDay(prescriptionList.get(j).getOneDay())
+                           .total(prescriptionList.get(j).getTotal())
+                           .preDate(prescriptionList.get(j).getPreDate())
+                           .build();
+                   preResponseDTOS.add(preResponseDTO);
+               }
+               PatientDiagnosisResponseDTO diaResponseDTO=PatientDiagnosisResponseDTO.builder()
+                       .diaNum(diagnosisList.get(i).getDiaNum())
+                       .diaDoctorId(diagnosisList.get(i).getDoctorId().getDoctorId())
+                       .diaContents(diagnosisList.get(i).getContents())
+                       .disease(diagnosisList.get(i).getDisease())
+                       .prescriptionList(preResponseDTOS)
+                       .diaDate(diagnosisList.get(i).getDiaDate())
+                       .build();
+               diagnosisResponseDTOS.add(diaResponseDTO);
+           }
+        }
+
+        PatientDiagnosisApiResponse responseList=PatientDiagnosisApiResponse.builder()
+                .patientId(id)
+                .diagnosisList(diagnosisResponseDTOS)
+                .build();
+        return Header.OK(responseList);
+
     }
 }
