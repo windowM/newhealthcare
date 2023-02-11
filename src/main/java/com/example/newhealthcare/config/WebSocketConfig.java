@@ -1,19 +1,25 @@
 package com.example.newhealthcare.config;
 
-import com.example.newhealthcare.chat.MyHandler;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.socket.config.annotation.*;
 
 @Configuration
-@RequiredArgsConstructor
-@EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer  {
-    private final MyHandler myHandler;
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws").withSockJS(); //웹 소캣을 사용하기 위해 설정하는 부분
+    }
 
-        registry.addHandler(myHandler, "ws/chat").setAllowedOrigins("*");
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.setApplicationDestinationPrefixes("/app"); //prefix 설정
+        registry.enableSimpleBroker("/topic"); //topic 이라는 주제에 브로커를 설정
     }
 }

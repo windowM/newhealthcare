@@ -1,6 +1,7 @@
 package com.example.newhealthcare.controller;
 
 import com.example.newhealthcare.Header;
+import com.example.newhealthcare.dto.ReservationDoctorDTO;
 import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.entity.Reservation;
 import com.example.newhealthcare.model.network.request.reservation.ReservationApiRequest;
@@ -12,6 +13,8 @@ import com.example.newhealthcare.service.ReservationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -43,7 +46,7 @@ public class ReservationController implements CrudInterface<ReservationApiReques
 
     //의사 : 예약 홈화면에서 예약환자들 리스트를 보여줌
     @GetMapping("/doctor/{id}/reservation")
-    public Header<?> showPatientResList(@PathVariable String id){
+    public Header<List<ReservationDoctorDTO>> showPatientResList(@PathVariable String id){
         return reservationService.showPatientResList(id);
     }
 

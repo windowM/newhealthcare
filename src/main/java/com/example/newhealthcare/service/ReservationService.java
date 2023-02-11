@@ -194,7 +194,7 @@ public class ReservationService implements CrudInterface<ReservationApiRequest, 
 
 
     //의사 : 예약환자 조회
-    public Header<?> showPatientResList(String id){
+    public Header<List<ReservationDoctorDTO>> showPatientResList(String id){
         List<Reservation> reservation=reservationRepository.findBySelDoctorId(id);
         if(!reservation.isEmpty()){
             List<ReservationDoctorDTO> reservationDTOS=new ArrayList<ReservationDoctorDTO>();

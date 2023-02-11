@@ -1,6 +1,7 @@
 package com.example.newhealthcare.model.network.response.doctor;
 
 import com.example.newhealthcare.dto.PatientResponseDTO;
+import com.example.newhealthcare.dto.ReservationDoctorDTO;
 import com.example.newhealthcare.model.entity.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +34,8 @@ public class DoctorApiResponse {
     private String code;
 
     private List<PatientResponseDTO> patientId;
+
+    private List<ReservationDoctorDTO> todayResList;
 
     //private Reservation reservation;
 

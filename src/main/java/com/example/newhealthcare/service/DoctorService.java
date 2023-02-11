@@ -2,17 +2,22 @@ package com.example.newhealthcare.service;
 
 import com.example.newhealthcare.Header;
 import com.example.newhealthcare.dto.PatientResponseDTO;
+import com.example.newhealthcare.dto.ReservationDoctorDTO;
 import com.example.newhealthcare.itf.CrudInterface;
 import com.example.newhealthcare.model.entity.DandP;
 import com.example.newhealthcare.model.entity.Doctor;
+import com.example.newhealthcare.model.entity.Reservation;
 import com.example.newhealthcare.model.network.request.doctor.DoctorApiRequest;
 import com.example.newhealthcare.model.network.response.doctor.DoctorApiResponse;
 import com.example.newhealthcare.repository.DandPRepository;
 import com.example.newhealthcare.repository.DoctorRepository;
+import com.example.newhealthcare.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +29,8 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
     private final DoctorRepository doctorRepository;
     @Autowired
     private final DandPRepository dandPRepository;
+    @Autowired
+    private final ReservationRepository reservationRepository;
 
     //의사 로그인
     public Header login(Header<DoctorApiRequest> request){
@@ -85,6 +92,40 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
                         patientResponseDTOS.add(patientResponseDTO);
                     });
 
+                    //오늘의 예약 정보
+                    String now = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+                    System.out.println("오늘 날짜 : "+now);
+
+                    List<Reservation> reservationList=reservationRepository.findBySelDoctorId(doctor1.getDoctorId());
+                    List<ReservationDoctorDTO> todayResList=new ArrayList<ReservationDoctorDTO>();
+                    if(!reservationList.isEmpty()){
+                        for(int i=0;i<reservationList.size();i++) {
+                            if (reservationList.get(i).getResDate().equals(now)) {
+                                PatientResponseDTO patientResponseDTO = PatientResponseDTO.builder()
+                                        .patientId(reservationList.get(i).getPatientId().getPatientId())
+                                        .born(reservationList.get(i).getPatientId().getBorn())
+                                        .gender(reservationList.get(i).getPatientId().getGender())
+                                        .name(reservationList.get(i).getPatientId().getName())
+                                        .phone(reservationList.get(i).getPatientId().getPhone())
+                                        .build();
+
+                                ReservationDoctorDTO resDTO = ReservationDoctorDTO.builder()
+                                        .resNum(reservationList.get(i).getResNum())
+                                        .selDoctorId(reservationList.get(i).getSelDoctorId())
+                                        .patientId(patientResponseDTO)
+                                        .contents(reservationList.get(i).getContents())
+                                        .resDate(reservationList.get(i).getResDate())
+                                        .resTime(reservationList.get(i).getResTime())
+                                        .build();
+
+                                todayResList.add(resDTO);
+                            }
+                            else{ continue;}
+                        }
+                    }else{
+                        System.out.println("오늘의 예약이 비어있다.");
+                    }
+
                     DoctorApiResponse doctorApiResponse=DoctorApiResponse.builder()
                             .doctorId(doctor1.getDoctorId())
                             .email(doctor1.getEmail())
@@ -93,10 +134,11 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
                             .major(doctor1.getMajor())
                             .code(doctor1.getCode())
                             .patientId(patientResponseDTOS)
+                            .todayResList(todayResList)
                             .build();
                     return Header.OK(doctorApiResponse);
                 })
-                .orElseGet(()->Header.ERROR("존재하지 않는 회원"));
+                .orElseGet(()->Header.ERROR("존재하지 않는 의사정보"));
     }
 
 

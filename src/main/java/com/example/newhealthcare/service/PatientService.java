@@ -119,6 +119,7 @@ public class PatientService  implements CrudInterface<PatientApiRequest, Patient
 
     //환자 코드번호 입력
     public Header inputCode(String id,Header<PatientApiRequest> request){
+        System.out.println("input code:"+request.getData().getCode());
         PatientApiRequest patientApiRequest= request.getData();
         Optional<Patient> patient=patientRepository.findById(id);
         return patient
