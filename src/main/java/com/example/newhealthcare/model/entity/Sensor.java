@@ -12,12 +12,19 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@SequenceGenerator(
+        name = "customer_seq",
+        sequenceName = "customer_seq",
+        initialValue = 1,
+        allocationSize = 1
+
+)
 //@ToString(exclude = {"patient_id"})
 public class Sensor{
 
     @Id
     @Column(name="sensor_sequence",nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")A
     private Long sq;
 
     @ManyToOne

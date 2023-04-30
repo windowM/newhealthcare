@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController // Json 형태로 객체 데이터를 반환
 @RequestMapping("/doctor")
 public class DoctorController implements CrudInterface<DoctorApiRequest,DoctorApiResponse> {
+
     @Autowired
     private DoctorService doctorService;
 
@@ -34,9 +35,8 @@ public class DoctorController implements CrudInterface<DoctorApiRequest,DoctorAp
 
     //로그인 성공시 {id} 의사정보 넘기기
     @Override
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public Header<DoctorApiResponse> read(@PathVariable String id) {
-        log.info("read id : {}",id);
         return doctorService.read(id);
     }
 
@@ -62,7 +62,7 @@ public class DoctorController implements CrudInterface<DoctorApiRequest,DoctorAp
         return doctorService.delete(id);
     }
 
-    //    @PostMapping("/login")
+    //@PostMapping("/login")
 //    public DoctorResponseDTO ckLogin(@RequestBody DoctorResponseDTO doctorResponseDTO){
 //        doctorResponseDTO = doctorService.login(doctorResponseDTO);
 //        return doctorResponseDTO;

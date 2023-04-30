@@ -48,6 +48,7 @@ public class PatientService  implements CrudInterface<PatientApiRequest, Patient
     //환자 회원가입
     @Override
     public Header<PatientApiResponse> create(Header<PatientApiRequest> request) {
+        System.out.println(request.getData());
         PatientApiRequest patientApiRequest=request.getData();
         Optional<Patient> patient=patientRepository.findById(patientApiRequest.getPatientId());
         if(!patient.isPresent()){

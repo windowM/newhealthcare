@@ -25,10 +25,13 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiResponse> {
+
     @Autowired
     private final DoctorRepository doctorRepository;
+
     @Autowired
     private final DandPRepository dandPRepository;
+
     @Autowired
     private final ReservationRepository reservationRepository;
 
@@ -140,7 +143,6 @@ public class DoctorService implements CrudInterface<DoctorApiRequest, DoctorApiR
                 })
                 .orElseGet(()->Header.ERROR("존재하지 않는 의사정보"));
     }
-
 
     //업데이트에서만 response를 사용하는데 다시 생각해봐야 할듯
     //의사 회원정보 업데이트
