@@ -12,6 +12,7 @@ import org.springframework.web.socket.config.annotation.*;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    //클라이언트가 웹소켓 서버에 연결하는데 사용할 엔드포인트 등록
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws").withSockJS(); //웹 소캣을 사용하기 위해 설정하는 부분

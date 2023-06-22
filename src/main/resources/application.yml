@@ -7,7 +7,7 @@ spring:
 
 
   datasource:
-    url: jdbc:oracle:thin:@healthcare_high ?TNS_ADMIN=/Users/user/Desktop/mwindow/allnew/wallet/Wallet_healthcare
+    url: jdbc:oracle:thin:@healthdb_high?TNS_ADMIN=/Users/user/Desktop/mwindow/allnew/wallet/Wallet_healthDB
     username: admin
     password: Ab123456789123
     driver-class-name: oracle.jdbc.OracleDriver

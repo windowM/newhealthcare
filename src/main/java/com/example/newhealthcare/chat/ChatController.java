@@ -26,17 +26,14 @@ import java.util.Map;
 @Controller
 public class ChatController {
 
-
-
     @GetMapping("/chatbot")
     public String chatBot(Model model, @RequestParam String id){
         model.addAttribute("id",id);
         return "chatbot1.html";
     }
-
-//    private static String secretKey = "시크릿 키 입력";
-//    private static String apiUrl = "api url 입력";
-
+    //카톡에 보내준 api키 사용
+    private static String secretKey = "시크릿 키 입력";
+    private static String apiUrl = "api url 입력";
 
     @MessageMapping("/sendMessage")
     @SendTo("/topic/public")

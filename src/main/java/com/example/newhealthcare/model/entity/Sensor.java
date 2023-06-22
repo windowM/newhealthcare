@@ -24,22 +24,37 @@ public class Sensor{
 
     @Id
     @Column(name="sensor_sequence",nullable = false)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")A
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
     private Long sq;
 
     @ManyToOne
     private Patient patientId;
 
-    private float ecg;
+    private float avgBpm;
 
-    private float emg;
+    private float hBpm;
 
-    private float ir;
+    private float lBpm;
 
-    private float bpm;
+    private float avgSpo2;
 
-    private float temp;
+    private float hSpo2;
 
-    @Column(name="sensor_date")
-    private String senDate;
+    private float lSpo2;
+
+    private float avgTemp;
+
+    private float hTemp;
+
+    private float lTemp;
+
+    private String mTime;
+
+    private String mDate;
+
+    private int statusBpm;
+
+    private int statusSpo2;
+
+    private int statusTemp;
 }
